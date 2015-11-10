@@ -1,3 +1,6 @@
+Renske Talsma
+10896503
+
 # Hangman
 
 This app is titled Hangman for now as I do not know a better name atm.
@@ -12,4 +15,6 @@ This hangman game is a different take on the classic version that adds some extr
 * Option to choose between short words and long words.
 * Sound effects to enhance the game experience.
 
-See a rough draft of the [here](http://i.imgur.com/YPZKXIA.jpg)
+See a rough draft of the app:
+
+![app](http://i.imgur.com/UjftaZe.png)
