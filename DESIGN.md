@@ -11,7 +11,7 @@ This hangman game is a different take on the classic version that adds some extr
 
 # Design document
 
-![app concept1](http://i.imgur.com/iiN0Oz0.jpg)
+![app concept1](http://i.imgur.com/9IgatGH.jpg)
 
 ![app concept1] (http://i.imgur.com/a9JMCa3.jpg)
 
