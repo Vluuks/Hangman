@@ -11,10 +11,14 @@ This hangman game is a different take on the classic version that adds some extr
 
 # Design document
 
-![app concept1](http://i.imgur.com/9IgatGH.jpg)
+Methods per class
+![app concept1](http://i.imgur.com/YRukX6b.png)
 
-![app concept1] (http://i.imgur.com/a9JMCa3.jpg)
+Methods brainstorming + more explained
+![app concept1] (http://i.imgur.com/nKKByV6.png)
 
+Overview of how things are connected
+![modelclasses] (http://i.imgur.com/RmClzu3.png)
 
-
-![modelclasses] (http://i.imgur.com/iiN0Oz0.jpg)
+Basic sketch of most important screens
+![sketch] (http://i.imgur.com/hMHXsiu.png)
