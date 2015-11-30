@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <resources>
+
+    <string name="app_name">Hangman_Basic</string>
+
+    <string-array name="words_small">
+            <item>BEAR</item>
+            <item>BOAR</item>
+            <item>DEER</item>
+            <item>DUCK</item>
+            <item>HARE</item>
+        </string-array>
+    <string name="title_activity_start_screen">StartScreenActivity</string>
+    </resources>
