@@ -51,7 +51,7 @@ public class GoodGamePlay extends GamePlay {
 
                 // if the user has no guesses left
                 else {
-                    onLose();
+                    onLose(this);  // takes current activity as argument, no idea if this is correct TODO
                 }
 
                 return false;
