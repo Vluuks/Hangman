@@ -10,28 +10,34 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/wrongletterlist_textview"
+        android:id="@+id/hangmanlogo"
         android:layout_gravity="center_horizontal" />
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/main_textview"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="113dp"
-        android:layout_gravity="center" />
+        android:text="NEW GAME"
+        android:id="@+id/startnewgame"
+        android:layout_gravity="center_horizontal"
+        android:onClick="startNewGame"/>
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/guessesleft_textview"
-        android:layout_gravity="center_horizontal" />
+        android:text="OPTIONS"
+        android:id="@+id/options"
+        android:layout_gravity="center_horizontal"
+        android:onClick="goToOptions"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/highscores"
+        android:layout_gravity="center_horizontal"
+        android:onClick="goToHighscores"/>
+
 </LinearLayout>

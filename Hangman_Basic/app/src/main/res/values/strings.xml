@@ -10,4 +10,5 @@
             <item>DUCK</item>
             <item>HARE</item>
         </string-array>
+    <string name="title_activity_start_screen">StartScreenActivity</string>
     </resources>
