@@ -17,7 +17,6 @@ import java.util.Set;
 
 public class HighscoresActivity extends AppCompatActivity {
 
-
     private ListView highscoreListView;
     private ArrayAdapter<String> listAdapter;
     private ArrayList<String> highscoreList;
@@ -28,7 +27,6 @@ public class HighscoresActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_highscores);
-
 
         highscoreList = new ArrayList<String>();
         listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, highscoreList);
@@ -49,22 +47,20 @@ public class HighscoresActivity extends AppCompatActivity {
 
         }
 
-        if (intent.getStringExtra("GUESSESLEFT") != null); {
-            if (highscoreset != null) {
-                List<String> savedlist = new ArrayList<String>(highscoreset);
-                highscoreList.addAll(savedlist);
-            }
+        // if the user won a game, add their score to the table
+        if (intent.getStringExtra("SOURCE") == "win"); {
+            //if (highscoreset != null) {
+             //   List<String> savedlist = new ArrayList<String>(highscoreset);
+              //  highscoreList.addAll(savedlist);
+            //}
             putHighscoreFromIntentInArray(intent);
         }
 
         // if no intent was found and there are no highscores yet
-        if (highscoreset == null && intent.getStringExtra("GUESSESLEFT") == null) {
+        if (highscoreset == null && intent.getStringExtra("SOURCE") != "win") {
             String[] initialtodos = new String[]{"No highscores yet."};
             highscoreList.addAll(Arrays.asList(initialtodos));
         }
-
-
-
 
 
     }
@@ -76,7 +72,7 @@ public class HighscoresActivity extends AppCompatActivity {
             listAdapter.remove("No highscores yet.");
         }
 
-        gametype = intent.getIntExtra("GAMETYPE");
+        gametype = intent.getIntExtra("GAMETYPE", 1);
         guessesleft  = intent.getStringExtra("GUESSESLEFT");
         word = intent.getStringExtra("WORD");
 
@@ -116,3 +112,4 @@ public class HighscoresActivity extends AppCompatActivity {
         }
 
 }
+

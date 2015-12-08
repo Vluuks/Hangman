@@ -4,6 +4,9 @@ import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Created by Renske on 28-11-2015.
  */
@@ -12,6 +15,8 @@ import android.widget.Toast;
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 public class EvilGamePlay extends GamePlay {
+
+
 
     @Override
     public boolean checkInWord(char letter, TextView textview) {
@@ -23,6 +28,47 @@ public class EvilGamePlay extends GamePlay {
             toast.show();
             return false;
         }
+
+
+        public static ArrayList<String> evilwordList;
+        PrepareForGame preparedictionary = new PrepareForGame();
+        evilwordList = new ArrayList<String>();
+        evilwordList = preparedictionary.getDictionary();
+        int wordlength = pickedword.length();
+
+        // iterate over all words in dictionary and add them to evil dictionary if length matches
+        ArrayList<String> evilwordList_tier2 = new ArrayList<String>();
+        for(String word: evilwordList){
+            if(word.length()== wordlength){
+                evilwordList_tier2.add(word);
+            }
+        }
+
+
+        // when user presses a letter
+        for(String word: evilwordList_tier2){
+
+            // create basic string of underscores to function as base key
+            String thekeyword = new String(new char[wordlength]).replace("\0", "_");
+            StringBuilder thekeywordbuilder = new StringBuilder(thekeyword);
+
+            // iterate over characters in word
+            for(int i = 0; i < word.length(); i ++){
+                if(i == letter){
+                    thekeywordbuilder.setCharAt(i, letter);
+                }
+            }
+
+            String finalkey = thekeywordbuilder.toString();
+
+            // if final key is already in hash table - append word
+
+            // else create new entry for this key, append word
+        }
+
+
+
+
 
         // check whether letter is present in word
         else {

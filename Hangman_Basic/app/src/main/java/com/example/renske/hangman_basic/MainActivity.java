@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity {
     public PrepareForGame startgame;
     public EvilGamePlay theevilgame;
     public GoodGamePlay thegoodgame;
+    public int gametype;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,31 +26,28 @@ public class MainActivity extends AppCompatActivity {
 
         // start the game's initialization
         startgame = new PrepareForGame();
-        startgame.initializeGame(this);
-        startgame.loadDictionary();
-
+        startgame.loadDictionary(MainActivity.this);
+        startgame.initializeGame(MainActivity.this);
         startgame.pickInitialWord(wordview);
 
-
         // obtain game type from initializiation
-        int gametype = startgame.getGameType();
+        gametype = startgame.getGameType();
+
 
         if (gametype == 1) {
             // tell program which code to use to handle key presses and guessed letters
             theevilgame = new EvilGamePlay();
-            theevilgame.setInitialGuesses(startgame.guessesallowed, guessesleft);
             theevilgame.setContext(MainActivity.this);
+            theevilgame.setGuesses(startgame.guessesallowed, guessesleft);
         }
 
         else {
             thegoodgame = new GoodGamePlay();
-            thegoodgame.setInitialGuesses(startgame.guessesallowed, guessesleft);
             thegoodgame.setContext(MainActivity.this);
-
-            }
-
+            thegoodgame.setGuesses(startgame.guessesallowed, guessesleft);
 
         }
+    }
 
 
 
@@ -59,85 +57,86 @@ public class MainActivity extends AppCompatActivity {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_A:
-                redirectInput('a');
+                redirectInput('A');
                 return true;
             case KeyEvent.KEYCODE_B:
-                redirectInput('b');
+                redirectInput('B');
                 return true;
             case KeyEvent.KEYCODE_C:
-                redirectInput('c');
+                redirectInput('C');
                 return true;
             case KeyEvent.KEYCODE_D:
-                redirectInput('d');
+                redirectInput('D');
                 return true;
             case KeyEvent.KEYCODE_E:
-                redirectInput('e');
+                redirectInput('E');
                 return true;
             case KeyEvent.KEYCODE_F:
-                redirectInput('f');
+                redirectInput('F');
                 return true;
             case KeyEvent.KEYCODE_G:
-                redirectInput('g');
+                redirectInput('G');
                 return true;
             case KeyEvent.KEYCODE_H:
-                redirectInput('h');
+                redirectInput('H');
                 return true;
             case KeyEvent.KEYCODE_I:
-                redirectInput('i');
+                redirectInput('I');
                 return true;
             case KeyEvent.KEYCODE_J:
-                redirectInput('j');
+                redirectInput('J');
                 return true;
             case KeyEvent.KEYCODE_K:
-                redirectInput('k');
+                redirectInput('K');
                 return true;
             case KeyEvent.KEYCODE_L:
-                redirectInput('l');
+                redirectInput('L');
                 return true;
             case KeyEvent.KEYCODE_M:
-                redirectInput('m');
+                redirectInput('M');
                 return true;
             case KeyEvent.KEYCODE_N:
-                redirectInput('n');
+                redirectInput('N');
                 return true;
             case KeyEvent.KEYCODE_O:
-                redirectInput('o');
+                redirectInput('O');
                 return true;
             case KeyEvent.KEYCODE_P:
-                redirectInput('p');
+                redirectInput('P');
                 return true;
             case KeyEvent.KEYCODE_Q:
-                redirectInput('q');
+                redirectInput('Q');
                 return true;
             case KeyEvent.KEYCODE_R:
-                redirectInput('r');
+                redirectInput('R');
                 return true;
             case KeyEvent.KEYCODE_S:
-                redirectInput('s');
+                redirectInput('S');
                 return true;
             case KeyEvent.KEYCODE_T:
-                redirectInput('t');
+                redirectInput('T');
                 return true;
             case KeyEvent.KEYCODE_U:
-                redirectInput('u');
+                redirectInput('U');
                 return true;
             case KeyEvent.KEYCODE_V:
-                redirectInput('v');
+                redirectInput('V');
                 return true;
             case KeyEvent.KEYCODE_W:
-                redirectInput('w');
+                redirectInput('W');
                 return true;
             case KeyEvent.KEYCODE_X:
-                redirectInput('x');
+                redirectInput('X');
                 return true;
             case KeyEvent.KEYCODE_Y:
-                redirectInput('y');
+                redirectInput('Y');
                 return true;
             case KeyEvent.KEYCODE_Z:
-                redirectInput('z');
+                redirectInput('Z');
                 return true;
             case KeyEvent.KEYCODE_BACK:
-                goToMenu();
+                Intent intent = new Intent(this, StartScreenActivity.class);
+                MainActivity.this.startActivity(intent);
                 return true;
 
             default:
@@ -146,21 +145,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void goToMenu(){
-        Intent intent = new Intent(this, StartScreenActivity.class);
-        MainActivity.this.startActivity(intent);
-
-    }
-
     public void redirectInput(char letter) {
         int gametype = startgame.getGameType();
 
+        // if the chosen game type is evil
         if (gametype == 1) {
             if (theevilgame.checkInWord(letter, wordview) == false) {
                 wrongletterlist.setText(theevilgame.getWrongLetters());
                 guessesleft.setText(theevilgame.getGuessesString());
             }
 
+            // if the user has guessed all the letters, go to highscores
             if (wordview.getText().toString().indexOf('_') == -1) {
                     Intent intent = new Intent(this, HighscoresActivity.class);
                     intent.putExtra("GUESSESLEFT", theevilgame.getGuessesString());
@@ -174,20 +169,24 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(this, HighscoresActivity.class);
                     MainActivity.this.startActivity(intent);
                 }
+
             }
 
-
+        // if the chosen game type is good
         else {
             if (thegoodgame.checkInWord(letter, wordview) == false) {
                 wrongletterlist.setText(thegoodgame.getWrongLetters());
                 guessesleft.setText(thegoodgame.getGuessesString());
             }
 
+            // if the user has guessed all the letters, go to highscores
             if (wordview.getText().toString().indexOf('_') == -1) {
+                wrongletterlist.setText(" ");
                 Intent intent = new Intent(this, HighscoresActivity.class);
                 intent.putExtra("GUESSESLEFT", thegoodgame.getGuessesString());
                 intent.putExtra("GAMETYPE", gametype);
                 intent.putExtra("WORD", wordview.getText().toString());
+                intent.putExtra("SOURCE", "win");
                 MainActivity.this.startActivity(intent);
             }
 
@@ -196,9 +195,22 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, HighscoresActivity.class);
                 MainActivity.this.startActivity(intent);
             }
+
         }
 
         }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     }

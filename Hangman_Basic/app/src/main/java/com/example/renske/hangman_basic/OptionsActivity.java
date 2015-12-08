@@ -13,7 +13,7 @@ import java.io.File;
 
 public class OptionsActivity extends AppCompatActivity {
 
-public SeekBar wordlength, guessesamount;
+public SeekBar wordlength_seekbar, guessesamount_seekbar;
     public Switch gamemode;
     public TextView wordlength_textview, guessesamount_textview;
     public int chosen_gamemode, chosen_guesses, chosen_maxwordlength;
@@ -24,31 +24,30 @@ public SeekBar wordlength, guessesamount;
         setContentView(R.layout.activity_options);
 
         // initialize lay out components
-        wordlength = (SeekBar) findViewById(R.id.wordlength);
-        guessesamount = (SeekBar) findViewById(R.id.guessesamount);
+        wordlength_seekbar = (SeekBar) findViewById(R.id.wordlength);
+        guessesamount_seekbar = (SeekBar) findViewById(R.id.guessesamount);
         gamemode = (Switch) findViewById(R.id.gamemode);
         wordlength_textview = (TextView) findViewById(R.id.wordlength_textview);
         guessesamount_textview = (TextView) findViewById(R.id.guessesamount_textview);
-        wordlength.setMax(15);
-        guessesamount.setMax(26);
+        wordlength_seekbar.setMax(15);
+        guessesamount_seekbar.setMax(26);
 
         // initialize listeners for components
-        trackSeekBarProgress(wordlength);
-        trackSeekBarProgress(guessesamount);
+        trackSeekBarProgress(wordlength_seekbar);
+        trackSeekBarProgress(guessesamount_seekbar);
         gamemode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-
                 if (isChecked) {
                     chosen_gamemode = 1; //evil
                     gamemode.setText("Evil");
-                } else {
-                    chosen_gamemode = 2; //gdod
+                }
+                else {
+                    chosen_gamemode = 2; //good
                     gamemode.setText("Good");
                 }
-
                 saveOptions();
             }
         });
@@ -69,20 +68,17 @@ public SeekBar wordlength, guessesamount;
         else
             gamemode.setChecked(false);
 
-        wordlength.setProgress(chosen_maxwordlength);
-        guessesamount.setProgress(chosen_guesses);
-
+        wordlength_seekbar.setProgress(chosen_maxwordlength);
+        guessesamount_seekbar.setProgress(chosen_guesses);
     }
 
 
     // get the options the user specified and put them in shared preferences
-    // add an onchange listener for every option bar/thing so that the options
-    // are changed when the user changes something
     public void saveOptions(){
 
         Log.d("SaveOptions", "Started function");
-        int chosen_wordlength = wordlength.getProgress();
-        int chosen_guesses = guessesamount.getProgress();
+        int chosen_wordlength = wordlength_seekbar.getProgress();
+        int chosen_guesses = guessesamount_seekbar.getProgress();
 
         // store the user's settings in the shared preferences
         SharedPreferences useroptions = this.getSharedPreferences("settings",
@@ -96,10 +92,7 @@ public SeekBar wordlength, guessesamount;
     }
 
 
-
-
-
-    // credit: http://stackoverflow.com/questions/8956218/android-seekbar-setonseekbarchangelistener
+    // custom listener for seekbars
     public void trackSeekBarProgress(SeekBar theSeekbar){
 
         theSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -116,19 +109,22 @@ public SeekBar wordlength, guessesamount;
             @Override
             public void onProgressChanged(SeekBar theSeekbar, int progress, boolean fromUser) {
 
+                if (theSeekbar == wordlength_seekbar) {
 
-                if (theSeekbar == wordlength) {
-
-                    if(progress <= 2)
-                        wordlength.setProgress(2);
+                    if(progress <= 2) {
+                        wordlength_seekbar.setProgress(2);
+                        // wordlength_textview.setText("2"); // liever niet dubbel maar anders werkt het niet goed??
+                    }
 
                     wordlength_textview.setText(String.valueOf(progress));
                     saveOptions();  }
 
-                if (theSeekbar == guessesamount) {
+                if (theSeekbar == guessesamount_seekbar) {
 
-                    if(progress < 1)
-                        guessesamount.setProgress(2);
+                    if(progress < 1) {
+                        guessesamount_seekbar.setProgress(2);
+                        // guessesamount_textview.setText("2");
+                    }
 
                     guessesamount_textview.setText(String.valueOf(progress));
                     saveOptions();  }

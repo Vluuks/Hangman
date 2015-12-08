@@ -29,13 +29,16 @@ public class StartScreenActivity extends AppCompatActivity {
         int chosen_gametype = useroptions.getInt("GAMETYPE", 2);
 
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("SOURCE", "start");
         StartScreenActivity.this.startActivity(intent);
 
     }
 
     public void goToHighscores(View view) {
         Intent intent = new Intent(this, HighscoresActivity.class);
+        intent.putExtra("SOURCE", "start");
         StartScreenActivity.this.startActivity(intent);
+
     }
 
     public void goToOptions(View view) {

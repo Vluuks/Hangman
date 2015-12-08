@@ -1,13 +1,10 @@
 package com.example.renske.hangman_basic;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -19,14 +16,13 @@ public class PrepareForGame extends AppCompatActivity {
 
     // declare variables
     public static ArrayList<String> wordList;
-    public static String underscoredword, pickedword;
-    public static int wordlength, maxwordlength, guessesallowed, gametype;
+    public static String underscoredword, pickedword, wrongletters, res_underscoredword, res_pickedword, res_wrongletters;
+    public static int wordlength, maxwordlength, guessesallowed, gametype, currentguesses, res_currentguesses, res_gametype;
 
 
     // load the dictiomary from XML file
-    public void loadDictionary() {
-        String[] wordstoguess = new String[]{"hu", "hor", "pompoen", "appel", "mandarijn", "pastinaak", "peer"};
-        // String[] wordstoguess = getResources().getStringArray(R.array.words_small);
+    public void loadDictionary(Context context) {
+        String[] wordstoguess = context.getResources().getStringArray(R.array.words_large);
         wordList = new ArrayList<String>();
         wordList.addAll(Arrays.asList(wordstoguess));
     }
@@ -44,6 +40,24 @@ public class PrepareForGame extends AppCompatActivity {
     }
 
 
+    public boolean resumeGame(Context context) {
+
+        SharedPreferences savedgamestatus = context.getSharedPreferences("status",
+                this.MODE_PRIVATE);
+        res_pickedword = savedgamestatus.getString("WORDTOGUESS", null);
+        res_underscoredword = savedgamestatus.getString("WORDSTATUS", null);
+        res_currentguesses = savedgamestatus.getInt("GUESSESSTATUS", 5);
+        res_wrongletters = savedgamestatus.getString("WRONGLETTERS", null);
+        res_gametype = savedgamestatus.getInt("GAMETYPE", 1);
+
+        // return if loading preferences was succesfull
+        if(pickedword == null || savedgamestatus.getString("WORDSTATUS", null) == null || wrongletters == null)
+            return false;
+        else
+            return true;
+    }
+
+
     // obtain gametype from options
     public int getGameType(){
         return gametype;
@@ -54,6 +68,10 @@ public class PrepareForGame extends AppCompatActivity {
     }
 
 
+    public ArrayList getDictionary(){
+        return wordList;
+
+    }
 
     // pick the word to start the game with
     public void pickInitialWord(TextView textview) {
@@ -91,3 +109,4 @@ public class PrepareForGame extends AppCompatActivity {
 
 
 }
+

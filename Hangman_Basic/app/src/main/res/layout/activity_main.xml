@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
+        android:text=" "
         android:id="@+id/wrongletterlist_textview"
         android:layout_gravity="center_horizontal" />
 
@@ -22,16 +22,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
+        android:text=" "
         android:id="@+id/main_textview"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="113dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text=" "
         android:id="@+id/guessesleft_textview"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

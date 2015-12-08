@@ -34,21 +34,17 @@ abstract class GamePlay extends AppCompatActivity {
     // puts current status of game in sharedpreferences
     public void saveGameStatus(Context context) {
 
-        SharedPreferences useroptions = context.getSharedPreferences("settings",
+        SharedPreferences currentgamestatus = context.getSharedPreferences("status",
                 this.MODE_PRIVATE);
-        SharedPreferences.Editor editor = useroptions.edit();
+        SharedPreferences.Editor editor = currentgamestatus.edit();
         editor.putString("WORDTOGUESS", pickedword);
         editor.putString("WORDSTATUS", underscoredword);
         editor.putInt("GUESSESSTATUS", currentguesses);
         editor.putString("WRONGLETTERS", wrongletters);
+        editor.putInt("GAMETYPE", gametype);
         editor.commit();
     }
 
-
-
-
-
-//  er uit halen?? werken niet
 
     // if the user guesses the word
     public void onWin(Activity currentactivity, Context context, TextView textview) {
@@ -94,7 +90,7 @@ abstract class GamePlay extends AppCompatActivity {
         return wrongletters;
     }
 
-    public void setInitialGuesses(int value, TextView textview){
+    public void setGuesses(int value, TextView textview){
         currentguesses = value;
         textview.setText(String.valueOf(currentguesses));
     }
@@ -107,6 +103,7 @@ abstract class GamePlay extends AppCompatActivity {
     public Context getContext(){
         return context;
     }
+
 
 
     // the abstract methods to be implemented by the sublcasses evil and good
