@@ -3,11 +3,11 @@ package com.example.renske.hangman_basic;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.widget.TextView;
-import java.util.ArrayList;
+import android.widget.Toast;
 
 
 /**
@@ -24,36 +24,27 @@ abstract class GamePlay extends AppCompatActivity {
         setContentView(R.layout.activity_main);}
 
     // declare variables
-    public static String wrongletters = " ";
-    public static String underscoredword, pickedword;
-    public static TextView word, wronglettersview;
+    public String wrongletters = " ";
+    public String pickedword;
     public int currentguesses, gametype;
-    private static Context context;
+    private Context context;
 
 
-    // puts current status of game in sharedpreferences
-    public void saveGameStatus(Context context) {
-
-        SharedPreferences currentgamestatus = context.getSharedPreferences("status",
-                this.MODE_PRIVATE);
-        SharedPreferences.Editor editor = currentgamestatus.edit();
-        editor.putString("WORDTOGUESS", pickedword);
-        editor.putString("WORDSTATUS", underscoredword);
-        editor.putInt("GUESSESSTATUS", currentguesses);
-        editor.putString("WRONGLETTERS", wrongletters);
-        editor.putInt("GAMETYPE", gametype);
-        editor.commit();
+    // adds letter to list of wrong letters
+    public void addWrongLetter(char letter){
+        StringBuilder wrongLettersList = new StringBuilder(wrongletters);
+        wrongLettersList.append(letter + " ");
+        wrongletters =  wrongLettersList.toString();
     }
 
 
-    // if the user guesses the word
+    // if the word is guessed, save score and continue to highscores
     public void onWin(Activity currentactivity, Context context, TextView textview) {
+        Toast toast = Toast.makeText(getContext(), "Congratulations, you won!", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+        toast.show();
 
-        //display some kind of winning message
-        // if highscore, let user type in name?
-        // pass this info on to highscore activity
-
-        Intent intent = new Intent(context, HighscoresActivity.class);
+        Intent intent = new Intent(context, HistoryViewActivity.class);
         intent.putExtra("GUESSESLEFT", currentguesses);
         intent.putExtra("GAMETYPE", gametype);
         intent.putExtra("WORD", String.valueOf(textview));
@@ -61,22 +52,18 @@ abstract class GamePlay extends AppCompatActivity {
     }
 
 
-    // if the user runs out of guesses
+    // if the user runs out of guesses, continue to highscores
     public void onLose(Activity currentactivity, Context context) {
-        // do something
-        Intent intent = new Intent(context, HighscoresActivity.class);
+        Toast toast = Toast.makeText(getContext(), "Unfortunately,  you lost...", Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+        toast.show();
+
+        Intent intent = new Intent(context, HistoryViewActivity.class);
         currentactivity.startActivity(intent);
 
     }
 
-    // adds letter to list of wrong letters
-    public void addWrongLetter(char letter){
-        StringBuilder wrongLettersList = new StringBuilder(wrongletters);
-        wrongLettersList.append(letter + " ");
-        wrongletters =  wrongLettersList.toString();
 
-
-    }
 
     public String getGuessesString(){
         return String.valueOf(currentguesses);
@@ -88,6 +75,10 @@ abstract class GamePlay extends AppCompatActivity {
 
     public String getWrongLetters(){
         return wrongletters;
+    }
+
+    public void setWrongletters(String string, TextView textview){
+        textview.setText(string);
     }
 
     public void setGuesses(int value, TextView textview){
@@ -107,7 +98,7 @@ abstract class GamePlay extends AppCompatActivity {
 
 
     // the abstract methods to be implemented by the sublcasses evil and good
-    public abstract boolean checkInWord(char letter, TextView textview);
+    public abstract boolean checkInWord(char letter, TextView wordtoguess_textview, TextView wrongletterlist_textview, TextView wrongtriesleft_textview);
 
 
 }

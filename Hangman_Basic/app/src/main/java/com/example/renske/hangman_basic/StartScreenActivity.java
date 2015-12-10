@@ -3,10 +3,7 @@ package com.example.renske.hangman_basic;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 public class StartScreenActivity extends AppCompatActivity {
@@ -35,7 +32,7 @@ public class StartScreenActivity extends AppCompatActivity {
     }
 
     public void goToHighscores(View view) {
-        Intent intent = new Intent(this, HighscoresActivity.class);
+        Intent intent = new Intent(this, HistoryViewActivity.class);
         intent.putExtra("SOURCE", "start");
         StartScreenActivity.this.startActivity(intent);
 

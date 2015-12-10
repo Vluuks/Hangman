@@ -33,7 +33,7 @@
 
 
 
-        <activity android:name=".HighscoresActivity"
+        <activity android:name=".HistoryViewActivity"
             android:configChanges="orientation|screenSize">
 
         </activity>

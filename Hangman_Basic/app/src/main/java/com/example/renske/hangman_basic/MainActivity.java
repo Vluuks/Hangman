@@ -8,10 +8,10 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public TextView wordview, wrongletterlist, guessesleft;
-    public PrepareForGame startgame;
-    public EvilGamePlay theevilgame;
-    public GoodGamePlay thegoodgame;
+    public TextView wordtoguess_textview, wrongletterlist_textview, wrongtriesleft_textview;
+    public GamePreparation startgame;
+    public EvilGamePlay evilgame;
+    public GoodGamePlay goodgame;
     public int gametype;
 
     @Override
@@ -20,39 +20,71 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // initialize views in the layout
-        wordview = (TextView) findViewById(R.id.main_textview);
-        wrongletterlist = (TextView) findViewById(R.id.wrongletterlist_textview);
-        guessesleft = (TextView) findViewById(R.id.guessesleft_textview);
+        wordtoguess_textview = (TextView) findViewById(R.id.main_textview);
+        wrongletterlist_textview = (TextView) findViewById(R.id.wrongletterlist_textview);
+        wrongtriesleft_textview = (TextView) findViewById(R.id.guessesleft_textview);
 
         // start the game's initialization
-        startgame = new PrepareForGame();
+        startgame = new GamePreparation();
         startgame.loadDictionary(MainActivity.this);
         startgame.initializeGame(MainActivity.this);
-        startgame.pickInitialWord(wordview);
+        startgame.pickInitialWord(wordtoguess_textview);
 
         // obtain game type from initializiation
         gametype = startgame.getGameType();
 
-
+        // determine which abstract implementation should be used from now on
         if (gametype == 1) {
-            // tell program which code to use to handle key presses and guessed letters
-            theevilgame = new EvilGamePlay();
-            theevilgame.setContext(MainActivity.this);
-            theevilgame.setGuesses(startgame.guessesallowed, guessesleft);
+            evilgame = new EvilGamePlay();
+            evilgame.setContext(MainActivity.this);
+            evilgame.setGuesses(startgame.wrongtriesallowed, wrongtriesleft_textview);
+            evilgame.setWrongletters(" ", wrongletterlist_textview);
         }
-
         else {
-            thegoodgame = new GoodGamePlay();
-            thegoodgame.setContext(MainActivity.this);
-            thegoodgame.setGuesses(startgame.guessesallowed, guessesleft);
-
+            goodgame = new GoodGamePlay();
+            goodgame.setContext(MainActivity.this);
+            goodgame.setGuesses(startgame.wrongtriesallowed, wrongtriesleft_textview);
+            goodgame.setWrongletters(" ", wrongletterlist_textview);
         }
     }
 
+    // redirect user's keyboard input to the correct gametype
+    public void redirectInput(char letter) {
 
+        // if the chosen game type is evil
+        if (gametype == 1) {
+            evilgame.checkInWord(letter, wordtoguess_textview, wrongletterlist_textview, wrongtriesleft_textview);
 
-    // !!!!!!! DEZE MOET IN HIER BLIJVEN STAAN KAN NIET IN GOOD/EVIL CLASS DAN WERKT HET NIET
-    // handling user keyboard input
+            // if the word is guessed, save score and continue to highscores
+            if (wordtoguess_textview.getText().toString().indexOf('_') == -1) {
+                goodgame.onWin(MainActivity.this, MainActivity.this, wordtoguess_textview);
+            }
+
+            // if the user runs out of guesses, continue to highscores
+            if (evilgame.getGuesses() == 0) {
+                evilgame.onLose(MainActivity.this, MainActivity.this);
+            }
+        }
+
+        // if the chosen game type is good
+        else {
+            goodgame.checkInWord(letter, wordtoguess_textview, wrongletterlist_textview, wrongtriesleft_textview);
+
+            // if the word is guessed, save score and continue to highscores
+            if (wordtoguess_textview.getText().toString().indexOf('_') == -1) {
+                goodgame.onWin(MainActivity.this, MainActivity.this, wordtoguess_textview);
+            }
+
+            // if the user runs out of guesses, continue to highscores
+            if (goodgame.getGuesses() == 0) {
+                goodgame.onLose(MainActivity.this, MainActivity.this);
+            }
+
+        }
+
+    }
+
+    // handle user keyboard input
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
@@ -142,78 +174,8 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return false;
         }
-
     }
-
-    public void redirectInput(char letter) {
-        int gametype = startgame.getGameType();
-
-        // if the chosen game type is evil
-        if (gametype == 1) {
-            if (theevilgame.checkInWord(letter, wordview) == false) {
-                wrongletterlist.setText(theevilgame.getWrongLetters());
-                guessesleft.setText(theevilgame.getGuessesString());
-            }
-
-            // if the user has guessed all the letters, go to highscores
-            if (wordview.getText().toString().indexOf('_') == -1) {
-                    Intent intent = new Intent(this, HighscoresActivity.class);
-                    intent.putExtra("GUESSESLEFT", theevilgame.getGuessesString());
-                    intent.putExtra("GAMETYPE", gametype);
-                    intent.putExtra("WORD", wordview.getText().toString());
-                    MainActivity.this.startActivity(intent);
-                }
-
-                // if the user is out of guesses, stop the game
-                if (theevilgame.getGuesses() == 0) {
-                    Intent intent = new Intent(this, HighscoresActivity.class);
-                    MainActivity.this.startActivity(intent);
-                }
-
-            }
-
-        // if the chosen game type is good
-        else {
-            if (thegoodgame.checkInWord(letter, wordview) == false) {
-                wrongletterlist.setText(thegoodgame.getWrongLetters());
-                guessesleft.setText(thegoodgame.getGuessesString());
-            }
-
-            // if the user has guessed all the letters, go to highscores
-            if (wordview.getText().toString().indexOf('_') == -1) {
-                wrongletterlist.setText(" ");
-                Intent intent = new Intent(this, HighscoresActivity.class);
-                intent.putExtra("GUESSESLEFT", thegoodgame.getGuessesString());
-                intent.putExtra("GAMETYPE", gametype);
-                intent.putExtra("WORD", wordview.getText().toString());
-                intent.putExtra("SOURCE", "win");
-                MainActivity.this.startActivity(intent);
-            }
-
-            // if the user is out of guesses, stop the game
-            if (thegoodgame.getGuesses() == 0) {
-                Intent intent = new Intent(this, HighscoresActivity.class);
-                MainActivity.this.startActivity(intent);
-            }
-
-        }
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
+}
 
 
 

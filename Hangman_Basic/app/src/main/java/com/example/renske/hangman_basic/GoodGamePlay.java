@@ -14,10 +14,10 @@ import android.widget.Toast;
 public class GoodGamePlay extends GamePlay {
 
     @Override
-    public boolean checkInWord(char letter, TextView textview) {
+    public boolean checkInWord(char letter, TextView wordtoguess_textview, TextView wrongletterlist_textview, TextView wrongtriesleft_textview) {
 
         //check if this letter was already pressed
-        if (wrongletters.indexOf(letter) != -1 || PrepareForGame.underscoredword.indexOf(letter) > 0) {
+        if (wrongletters.indexOf(letter) != -1 || GamePreparation.underscoredword.indexOf(letter) > 0) {
             Toast toast = Toast.makeText(getContext(), "You already guessed " + letter, Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
             toast.show();
@@ -26,19 +26,19 @@ public class GoodGamePlay extends GamePlay {
 
         // check whether letter is present in word
         else {
-            if (PrepareForGame.pickedword.indexOf(letter) >= 0) {
+            if (GamePreparation.pickedword.indexOf(letter) >= 0) {
 
                 // start building the new string do be displayed
-                StringBuilder theWord = new StringBuilder(PrepareForGame.underscoredword);
+                StringBuilder theWord = new StringBuilder(GamePreparation.underscoredword);
 
-                for (int i = 0; i < PrepareForGame.pickedword.length(); i++) {
+                for (int i = 0; i < GamePreparation.pickedword.length(); i++) {
 
-                    if (PrepareForGame.pickedword.charAt(i) == letter)
+                    if (GamePreparation.pickedword.charAt(i) == letter)
                         theWord.setCharAt(i, letter);
                 }
 
-                PrepareForGame.underscoredword = theWord.toString();
-                textview.setText(PrepareForGame.underscoredword);
+                GamePreparation.underscoredword = theWord.toString();
+                wordtoguess_textview.setText(GamePreparation.underscoredword);
                 return true;
             }
 
@@ -48,6 +48,9 @@ public class GoodGamePlay extends GamePlay {
                 if (currentguesses > 0) {
                     currentguesses--;
                     addWrongLetter(letter);
+                    wrongletterlist_textview.setText(getWrongLetters());
+                    wrongtriesleft_textview.setText(getGuessesString());
+
                 }
 
                 return false;
