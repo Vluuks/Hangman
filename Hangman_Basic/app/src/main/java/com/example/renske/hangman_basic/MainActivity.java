@@ -79,9 +79,7 @@ public class MainActivity extends AppCompatActivity {
             if (goodgame.getGuesses() == 0) {
                 goodgame.onLose(MainActivity.this, MainActivity.this);
             }
-
         }
-
     }
 
     // handle user keyboard input

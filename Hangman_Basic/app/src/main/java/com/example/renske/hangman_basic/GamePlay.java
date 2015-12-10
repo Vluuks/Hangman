@@ -29,14 +29,12 @@ abstract class GamePlay extends AppCompatActivity {
     public int currentguesses, gametype;
     private Context context;
 
-
     // adds letter to list of wrong letters
     public void addWrongLetter(char letter){
         StringBuilder wrongLettersList = new StringBuilder(wrongletters);
         wrongLettersList.append(letter + " ");
         wrongletters =  wrongLettersList.toString();
     }
-
 
     // if the word is guessed, save score and continue to highscores
     public void onWin(Activity currentactivity, Context context, TextView textview) {
@@ -51,7 +49,6 @@ abstract class GamePlay extends AppCompatActivity {
         currentactivity.startActivity(intent);
     }
 
-
     // if the user runs out of guesses, continue to highscores
     public void onLose(Activity currentactivity, Context context) {
         Toast toast = Toast.makeText(getContext(), "Unfortunately,  you lost...", Toast.LENGTH_SHORT);
@@ -60,10 +57,7 @@ abstract class GamePlay extends AppCompatActivity {
 
         Intent intent = new Intent(context, HistoryViewActivity.class);
         currentactivity.startActivity(intent);
-
     }
-
-
 
     public String getGuessesString(){
         return String.valueOf(currentguesses);
@@ -95,11 +89,7 @@ abstract class GamePlay extends AppCompatActivity {
         return context;
     }
 
-
-
-    // the abstract methods to be implemented by the sublcasses evil and good
+    // the abstract methods to be implemented by the classes evil and good
     public abstract boolean checkInWord(char letter, TextView wordtoguess_textview, TextView wrongletterlist_textview, TextView wrongtriesleft_textview);
-
-
 }
 

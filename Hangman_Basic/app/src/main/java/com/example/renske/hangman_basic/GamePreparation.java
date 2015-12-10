@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-/**
- * Created by Renske on 1-12-2015.
- */
 public class GamePreparation extends AppCompatActivity {
 
     // declare variables
@@ -33,14 +30,6 @@ public class GamePreparation extends AppCompatActivity {
             wrongtriesallowed = useroptions.getInt("GUESSES", 5);
             maxwordlength = useroptions.getInt("WORDLENGTH", 6);
             gametype = useroptions.getInt("GAMETYPE", 1);
-    }
-
-    public int getGameType(){
-        return gametype;
-    }
-
-    public static ArrayList getDictionary(){
-        return dictionary;
     }
 
     // pick the word to start the game with
@@ -72,6 +61,14 @@ public class GamePreparation extends AppCompatActivity {
         // set the underscores to the right length
         underscoredword = new String(new char[current_wordlength]).replace("\0", "_");
         textview.setText(underscoredword);
+    }
+
+    public int getGameType(){
+        return gametype;
+    }
+
+    public static ArrayList getDictionary(){
+        return dictionary;
     }
 }
 

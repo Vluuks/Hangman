@@ -12,12 +12,10 @@ public class StartScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_screen);
-
     }
 
+    // obtain settings and redirect to game activity
     public void startNewGame(View view) {
-
-        // obtain user's settings from sharedpreferences
         SharedPreferences useroptions = this.getSharedPreferences("settings",
                 this.MODE_PRIVATE);
         float savedNumber1 = useroptions.getFloat("1", 0);
@@ -28,16 +26,16 @@ public class StartScreenActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("SOURCE", "start");
         StartScreenActivity.this.startActivity(intent);
-
     }
 
+    // redirect to highscore activity
     public void goToHighscores(View view) {
         Intent intent = new Intent(this, HistoryViewActivity.class);
         intent.putExtra("SOURCE", "start");
         StartScreenActivity.this.startActivity(intent);
-
     }
 
+    // redirect to option activity
     public void goToOptions(View view) {
         Intent intent = new Intent(this, OptionsActivity.class);
         StartScreenActivity.this.startActivity(intent);

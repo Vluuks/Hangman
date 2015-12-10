@@ -8,16 +8,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Set;
 
-/**
- * Created by Renske on 28-11-2015.
- */
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// GOOD GAME PLAY
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 public class EvilGamePlay extends GamePlay {
-
-
 
     @Override
     public boolean checkInWord(char letter, TextView wordtoguess_textview, TextView wrongletterlist_textview, TextView wrongtriesleft_textview) {
@@ -33,6 +24,7 @@ public class EvilGamePlay extends GamePlay {
         else {
             ArrayList<String> evil_dictionary;
             evil_dictionary = GamePreparation.getDictionary();
+            Hashtable hashtable = new Hashtable();
             int wordlength = pickedword.length();
 
             // iterate over all words in dictionary and add them to evil dictionary if length matches
@@ -42,8 +34,6 @@ public class EvilGamePlay extends GamePlay {
                     evil_dictionary_fixedlength.add(word);
                 }
             }
-
-            Hashtable hashtable = new Hashtable();
 
             // when user presses a letter
             for (String word : evil_dictionary_fixedlength) {
@@ -71,25 +61,18 @@ public class EvilGamePlay extends GamePlay {
 
                     // put the array back into the hashtable
                     hashtable.put("finalkey", tempwordarray);
-
                 }
 
                 // else create new entry for this key, append word
                 else {
-
                     hashtable.put(finalkey, tempwordarray);
                 }
-
                 // clear the temporary array
                 tempwordarray.clear();
-
             }
-
 
             // compare size of lists in hashtable and find out which one is the largest
             Set<String> keys = hashtable.keySet();
-
-            // get the set of possible words that belongs to the current state of the word
             ArrayList<String> currentwordlist = (ArrayList<String>) hashtable.get(GamePreparation.underscoredword);
             String currentkey = GamePreparation.underscoredword;
 
@@ -128,8 +111,6 @@ public class EvilGamePlay extends GamePlay {
                 wordtoguess_textview.setText(GamePreparation.underscoredword);
                 return true;
             }
-
         }
-
     }
 }

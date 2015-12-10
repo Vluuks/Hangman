@@ -29,39 +29,28 @@ public class HistoryViewActivity extends AppCompatActivity {
 
         highscoreList = new ArrayList<String>();
         listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, highscoreList);
-        Intent intent = getIntent();
-
-        // create and set arrayadapter
         highscoreListView = (ListView) findViewById(R.id.listView);
         highscoreListView.setAdapter(listAdapter);
 
         // get list with highscores from preferences if this is not the first time they are added
         SharedPreferences savedList = this.getSharedPreferences("savedhighscores", MODE_PRIVATE);
         Set<String> highscoreset = savedList.getStringSet("theSavedList", null);
-
-        // if there are preferences, use those
         if (highscoreset != null) {
             List<String> savedlist = new ArrayList<String>(highscoreset);
             highscoreList.addAll(savedlist);
-
         }
 
         // if the user won a game, add their score to the table
+        Intent intent = getIntent();
         if (intent.getStringExtra("SOURCE") == "win"); {
-            //if (highscoreset != null) {
-             //   List<String> savedlist = new ArrayList<String>(highscoreset);
-              //  highscoreList.addAll(savedlist);
-            //}
             putHighscoreFromIntentInArray(intent);
         }
 
         // if no intent was found and there are no highscores yet
         if (highscoreset == null && intent.getStringExtra("SOURCE") != "win") {
-            String[] initialtodos = new String[]{"No highscores yet."};
-            highscoreList.addAll(Arrays.asList(initialtodos));
+            String[] nohighscores = new String[]{"No highscores yet."};
+            highscoreList.addAll(Arrays.asList(nohighscores));
         }
-
-
     }
 
     // put user input in the array
@@ -78,17 +67,16 @@ public class HistoryViewActivity extends AppCompatActivity {
         // build string to put in actual highscore table
         StringBuilder highscorebuilder = new StringBuilder();
 
-            if (gametype == 1)
+            if (gametype == 1) {
                 highscorebuilder.append("Type: Evil |");
-
-            else
+            }
+            else {
                 highscorebuilder.append("Type: Good |");
+            }
 
         highscorebuilder.append(" Guesses left: " + guessesleft + " |");
         highscorebuilder.append(" Word : " + word);
-
         String highscore = highscorebuilder.toString();
-
         listAdapter.add(highscore);
 
         // add the current state of highscore list to shared preferences
@@ -98,16 +86,12 @@ public class HistoryViewActivity extends AppCompatActivity {
         highscoreset.addAll(highscoreList);
         edit.putStringSet("theSavedList", highscoreset);
         edit.commit();
-
-
     }
 
-
-
+    // redirect user to menu if back is pressed
     public void onBackPressed(){
             Intent intent = new Intent(this, StartScreenActivity.class);
             HistoryViewActivity.this.startActivity(intent);
-
         }
 
 }

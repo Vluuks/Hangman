@@ -4,13 +4,6 @@ import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**
- * Created by Renske on 28-11-2015.
- */
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// GOOD GAME PLAY
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 public class GoodGamePlay extends GamePlay {
 
     @Override
@@ -50,14 +43,9 @@ public class GoodGamePlay extends GamePlay {
                     addWrongLetter(letter);
                     wrongletterlist_textview.setText(getWrongLetters());
                     wrongtriesleft_textview.setText(getGuessesString());
-
                 }
-
                 return false;
             }
         }
-
-
     }
-
 }
