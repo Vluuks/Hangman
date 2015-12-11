@@ -15,7 +15,7 @@ This app is titled Hangman and contains both an evil and good version of the gam
 
 
 # Notes
-I would have liked to incorporate the keyboard key press detection and subsequent behaviour in the Good/Evil classes but the nature of the OnKeyUp method made this impossible.
+I would have liked to incorporate the keyboard key press detection and subsequent behaviour in the Good/Evil classes but the nature of the OnKeyUp method made this impossible. This is why it's placed in MainActivity.
 
 
 # First draft version:
