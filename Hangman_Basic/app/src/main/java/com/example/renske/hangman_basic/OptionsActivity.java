@@ -13,7 +13,7 @@ import java.io.File;
 
 public class OptionsActivity extends AppCompatActivity {
 
-public SeekBar wordlength_seekbar, guessesamount_seekbar;
+    public SeekBar wordlength_seekbar, guessesamount_seekbar;
     public Switch gamemode;
     public TextView wordlength_textview, guessesamount_textview;
     public int chosen_gamemode, chosen_guesses, chosen_maxwordlength;
@@ -38,14 +38,13 @@ public SeekBar wordlength_seekbar, guessesamount_seekbar;
         gamemode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
-            public void onCheckedChanged(CompoundButton buttonView,
-                                         boolean isChecked) {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    chosen_gamemode = 1; //evil
+                    chosen_gamemode = 1;
                     gamemode.setText("Evil");
                 }
                 else {
-                    chosen_gamemode = 2; //good
+                    chosen_gamemode = 2;
                     gamemode.setText("Good");
                 }
                 saveOptions();
@@ -72,15 +71,11 @@ public SeekBar wordlength_seekbar, guessesamount_seekbar;
         guessesamount_seekbar.setProgress(chosen_guesses);
     }
 
-
     // get the options the user specified and put them in shared preferences
     public void saveOptions(){
-
-        Log.d("SaveOptions", "Started function");
         int chosen_wordlength = wordlength_seekbar.getProgress();
         int chosen_guesses = guessesamount_seekbar.getProgress();
 
-        // store the user's settings in the shared preferences
         SharedPreferences useroptions = this.getSharedPreferences("settings",
                 this.MODE_PRIVATE);
         SharedPreferences.Editor editor = useroptions.edit();
@@ -88,52 +83,40 @@ public SeekBar wordlength_seekbar, guessesamount_seekbar;
         editor.putInt("GUESSES", chosen_guesses);
         editor.putInt("GAMETYPE", chosen_gamemode);
         editor.commit();
-
     }
-
 
     // custom listener for seekbars
     public void trackSeekBarProgress(SeekBar theSeekbar){
 
         theSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
+            // save options when user stops sliding seekbars
             @Override
             public void onStopTrackingTouch(SeekBar theSeekbar) {
+                saveOptions();
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar theSeekbar) {
-                // not needed? not sure keep for now
+                saveOptions();
             }
 
+            // prevent user from picking values that are too low and adjust text
             @Override
             public void onProgressChanged(SeekBar theSeekbar, int progress, boolean fromUser) {
-
                 if (theSeekbar == wordlength_seekbar) {
-
                     if(progress <= 2) {
                         wordlength_seekbar.setProgress(2);
-                        // wordlength_textview.setText("2"); // liever niet dubbel maar anders werkt het niet goed??
                     }
-
                     wordlength_textview.setText(String.valueOf(progress));
-                    saveOptions();  }
-
+                }
                 if (theSeekbar == guessesamount_seekbar) {
-
                     if(progress < 1) {
                         guessesamount_seekbar.setProgress(2);
-                        // guessesamount_textview.setText("2");
                     }
-
                     guessesamount_textview.setText(String.valueOf(progress));
-                    saveOptions();  }
-
-
+                }
             }
         });
-
-
     }
-
 }

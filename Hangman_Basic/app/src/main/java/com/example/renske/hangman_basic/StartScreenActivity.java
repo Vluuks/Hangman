@@ -16,12 +16,10 @@ public class StartScreenActivity extends AppCompatActivity {
 
     // obtain settings and redirect to game activity
     public void startNewGame(View view) {
-        SharedPreferences useroptions = this.getSharedPreferences("settings",
-                this.MODE_PRIVATE);
-        float savedNumber1 = useroptions.getFloat("1", 0);
-        int chosen_wordlength = useroptions.getInt("WORDLENGTH", 5);
-        int chosen_guesses = useroptions.getInt("GUESSES", 7);
-        int chosen_gametype = useroptions.getInt("GAMETYPE", 2);
+        SharedPreferences useroptions = this.getSharedPreferences("settings", this.MODE_PRIVATE);
+        int chosenWordlength = useroptions.getInt("WORDLENGTH", 5);
+        int chosenGuesses = useroptions.getInt("GUESSES", 7);
+        int chosenGametype = useroptions.getInt("GAMETYPE", 2);
 
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("SOURCE", "start");
@@ -40,6 +38,4 @@ public class StartScreenActivity extends AppCompatActivity {
         Intent intent = new Intent(this, OptionsActivity.class);
         StartScreenActivity.this.startActivity(intent);
     }
-
-
 }

@@ -27,8 +27,10 @@ public class HistoryViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_highscores);
 
+        // initialize list and adapter
         highscoreList = new ArrayList<String>();
-        listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, highscoreList);
+        listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
+                highscoreList);
         highscoreListView = (ListView) findViewById(R.id.listView);
         highscoreListView.setAdapter(listAdapter);
 
@@ -46,14 +48,14 @@ public class HistoryViewActivity extends AppCompatActivity {
             putHighscoreFromIntentInArray(intent);
         }
 
-        // if no intent was found and there are no highscores yet
+        // if there are no highscores yet, display message accordingly
         if (highscoreset == null && intent.getStringExtra("SOURCE") != "win") {
             String[] nohighscores = new String[]{"No highscores yet."};
             highscoreList.addAll(Arrays.asList(nohighscores));
         }
     }
 
-    // put user input in the array
+    // put highscore in list
     public void putHighscoreFromIntentInArray(Intent intent) {
 
         if (highscoreList.contains("No highscores yet.")){
@@ -93,6 +95,4 @@ public class HistoryViewActivity extends AppCompatActivity {
             Intent intent = new Intent(this, StartScreenActivity.class);
             HistoryViewActivity.this.startActivity(intent);
         }
-
 }
-

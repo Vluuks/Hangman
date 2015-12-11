@@ -3,7 +3,6 @@ package com.example.renske.hangman_basic;
 import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Set;
@@ -11,104 +10,103 @@ import java.util.Set;
 public class EvilGamePlay extends GamePlay {
 
     @Override
-    public boolean checkInWord(char letter, TextView wordtoguess_textview, TextView wrongletterlist_textview, TextView wrongtriesleft_textview) {
+    public boolean checkInWord(char letter, TextView wordToGuess_textView,
+        TextView wrongLetterList_textView, TextView wrongTriesLeft_textView) {
 
         //check if this letter was already pressed
-        if (wrongletters.indexOf(letter) != -1 || GamePreparation.underscoredword.indexOf(letter) > 0) {
-            Toast toast = Toast.makeText(getContext(), "You already guessed " + letter, Toast.LENGTH_SHORT);
+        if (wrongLetterString.indexOf(letter) != -1 ||
+                GamePreparation.underscoredWord.indexOf(letter) > 0) {
+            Toast toast = Toast.makeText(getContext(), "You already guessed " + letter,
+                Toast.LENGTH_SHORT);
             toast.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, 0);
             toast.show();
             return false;
         }
 
         else {
-            ArrayList<String> evil_dictionary;
-            evil_dictionary = GamePreparation.getDictionary();
-            Hashtable hashtable = new Hashtable();
-            int wordlength = pickedword.length();
+            ArrayList<String> evilDictionary;
+            evilDictionary = GamePreparation.getDictionary();
+            Hashtable hashtable = new Hashtable(); //TODO
+            int wordLength = pickedWord.length();
 
-            // iterate over all words in dictionary and add them to evil dictionary if length matches
-            ArrayList<String> evil_dictionary_fixedlength = new ArrayList<String>();
-            for (String word : evil_dictionary) {
-                if (word.length() == wordlength) {
-                    evil_dictionary_fixedlength.add(word);
+            // iterate over all words in dictionary and add them to new one if length matches
+            ArrayList<String> evilDictionary_sameLength = new ArrayList<String>();
+            for (String word : evilDictionary) {
+                if (word.length() == wordLength) {
+                    evilDictionary_sameLength.add(word);
                 }
             }
 
             // when user presses a letter
-            for (String word : evil_dictionary_fixedlength) {
+            for (String word : evilDictionary_sameLength) {
 
                 // create basic string of underscores to function as base key
-                String thekeyword = new String(new char[wordlength]).replace("\0", "_");
-                StringBuilder thekeywordbuilder = new StringBuilder(thekeyword);
+                String theKeyWord = new String(new char[wordLength]).replace("\0", "_");
+                StringBuilder keyWordBuilder = new StringBuilder(theKeyWord);
 
                 // iterate over characters in word
                 for (int i = 0; i < word.length(); i++) {
                     if (i == letter) {
-                        thekeywordbuilder.setCharAt(i, letter);
+                        keyWordBuilder.setCharAt(i, letter);
                     }
                 }
 
-                String finalkey = thekeywordbuilder.toString();
-                ArrayList<String> tempwordarray = new ArrayList<String>();
-                tempwordarray.add(word);
+                String theFinalKey = keyWordBuilder.toString();
+                ArrayList<String> tempWordList = new ArrayList<String>();
+                tempWordList.add(word);
 
-                // if final key is already in hash table - append word
-                if (hashtable.containsKey("finalkey")) {
-                    // get array from key
-                    tempwordarray = (ArrayList<String>) hashtable.get("finalkey");
-                    tempwordarray.add(word);
-
-                    // put the array back into the hashtable
-                    hashtable.put("finalkey", tempwordarray);
+                // if final key is already in hash table
+                if (hashtable.containsKey(theFinalKey)) {
+                    tempWordList = (ArrayList<String>) hashtable.get(theFinalKey);
+                    tempWordList.add(word);
+                    hashtable.put(theFinalKey, tempWordList);
                 }
 
-                // else create new entry for this key, append word
+                // else create new entry for this key
                 else {
-                    hashtable.put(finalkey, tempwordarray);
+                    hashtable.put(theFinalKey, tempWordList);
                 }
-                // clear the temporary array
-                tempwordarray.clear();
+
+                tempWordList.clear();
             }
 
             // compare size of lists in hashtable and find out which one is the largest
             Set<String> keys = hashtable.keySet();
-            ArrayList<String> currentwordlist = (ArrayList<String>) hashtable.get(GamePreparation.underscoredword);
-            String currentkey = GamePreparation.underscoredword;
+            ArrayList<String> currentWordList = (ArrayList<String>)
+                    hashtable.get(GamePreparation.underscoredWord);
+            String currentKey = GamePreparation.underscoredWord;
 
             // iterate over all the lists of words in the hashtable
             for (String key : keys) {
-                ArrayList<String> tempwordlist_2 = (ArrayList<String>) hashtable.get(key);
+                ArrayList<String> tempWordList_2 = (ArrayList<String>) hashtable.get(key);
 
                 // if the found list is bigger than the one before, use it
-                if (tempwordlist_2.size() > currentwordlist.size()) {
-                    currentwordlist = tempwordlist_2;
-                    currentkey = key;
+                if (tempWordList_2.size() > currentWordList.size()) {
+                    currentWordList = tempWordList_2;
+                    currentKey = key;
                 }
-
             }
 
             // if there is no change in optimal key/list combination
-            if (currentkey == GamePreparation.underscoredword) {
-                currentguesses--;
+            if (currentKey == GamePreparation.underscoredWord) {
+                currentGuesses--;
                 addWrongLetter(letter);
-                wrongletterlist_textview.setText(getWrongLetters());
-                wrongtriesleft_textview.setText(getGuessesString());
+                wrongLetterList_textView.setText(getWrongLetters());
+                wrongTriesLeft_textView.setText(getGuessesString());
                 return false;
             }
 
             else {
                 // start building the new string do be displayed
-                StringBuilder thewordbuilder = new StringBuilder(GamePreparation.underscoredword);
+                StringBuilder thewordbuilder = new StringBuilder(GamePreparation.underscoredWord);
 
-                for (int i = 0; i < GamePreparation.pickedword.length(); i++) {
-
-                    if (GamePreparation.pickedword.charAt(i) == letter)
+                for (int i = 0; i < GamePreparation.pickedWord.length(); i++) {
+                    if (GamePreparation.pickedWord.charAt(i) == letter)
                         thewordbuilder.setCharAt(i, letter);
                 }
 
-                GamePreparation.underscoredword = thewordbuilder.toString();
-                wordtoguess_textview.setText(GamePreparation.underscoredword);
+                GamePreparation.underscoredWord = thewordbuilder.toString();
+                wordToGuess_textView.setText(GamePreparation.underscoredWord);
                 return true;
             }
         }

@@ -13,8 +13,8 @@ public class GamePreparation extends AppCompatActivity {
 
     // declare variables
     public static ArrayList<String> dictionary;
-    public static String underscoredword, pickedword;
-    public int current_wordlength, longestword, maxwordlength, wrongtriesallowed, gametype;
+    public static String underscoredWord, pickedWord;
+    public int currentWordlength, longestWord, maxWordLength, wrongTriesAllowed, gametype;
     
     // load the dictiomary from XML file
     public void loadDictionary(Context context) {
@@ -27,40 +27,40 @@ public class GamePreparation extends AppCompatActivity {
     public void initializeGame(Context context) {
             SharedPreferences useroptions = context.getSharedPreferences("settings",
                     this.MODE_PRIVATE);
-            wrongtriesallowed = useroptions.getInt("GUESSES", 5);
-            maxwordlength = useroptions.getInt("WORDLENGTH", 6);
+            wrongTriesAllowed = useroptions.getInt("GUESSES", 5);
+            maxWordLength = useroptions.getInt("WORDLENGTH", 6);
             gametype = useroptions.getInt("GAMETYPE", 1);
     }
 
     // pick the word to start the game with
     public void pickInitialWord(TextView textview) {
-        longestword = 15;
-        current_wordlength = 1;
+        longestWord = 15;
+        currentWordlength = 1;
 
         // if user has specified less than max word length
-        if (maxwordlength < longestword) {
+        if (maxWordLength < longestWord) {
             Random randomizer = new Random();
-            pickedword = dictionary.get(randomizer.nextInt(dictionary.size()));
-            current_wordlength = pickedword.length();
+            pickedWord = dictionary.get(randomizer.nextInt(dictionary.size()));
+            currentWordlength = pickedWord.length();
 
             // keep picking a random word until it has the right length
-            while (current_wordlength > maxwordlength) {
+            while (currentWordlength > maxWordLength) {
                 Random randomizers = new Random();
-                pickedword = dictionary.get(randomizers.nextInt(dictionary.size()));
-                current_wordlength = pickedword.length();
+                pickedWord = dictionary.get(randomizers.nextInt(dictionary.size()));
+                currentWordlength = pickedWord.length();
             }
         }
 
         // if the user has not specified a maximum value, just pick a random word
         else {
             Random randomizer = new Random();
-            pickedword = dictionary.get(randomizer.nextInt(dictionary.size()));
-            current_wordlength = pickedword.length();
+            pickedWord = dictionary.get(randomizer.nextInt(dictionary.size()));
+            currentWordlength = pickedWord.length();
         }
 
         // set the underscores to the right length
-        underscoredword = new String(new char[current_wordlength]).replace("\0", "_");
-        textview.setText(underscoredword);
+        underscoredWord = new String(new char[currentWordlength]).replace("\0", "_");
+        textview.setText(underscoredWord);
     }
 
     public int getGameType(){

@@ -9,14 +9,6 @@ import android.view.Gravity;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-/**
- * Created by Renske on 28-11-2015.
- */
-////////////////////////////////////////////////////////////////////////////////////////////////////
-// ABSTRACT GAMEPLAY CLASS
-////////////////////////////////////////////////////////////////////////////////////////////////////
-
 abstract class GamePlay extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,60 +16,60 @@ abstract class GamePlay extends AppCompatActivity {
         setContentView(R.layout.activity_main);}
 
     // declare variables
-    public String wrongletters = " ";
-    public String pickedword;
-    public int currentguesses, gametype;
+    public String wrongLetterString = " ";
+    public String pickedWord;
+    public int currentGuesses, gametype;
     private Context context;
 
     // adds letter to list of wrong letters
     public void addWrongLetter(char letter){
-        StringBuilder wrongLettersList = new StringBuilder(wrongletters);
+        StringBuilder wrongLettersList = new StringBuilder(wrongLetterString);
         wrongLettersList.append(letter + " ");
-        wrongletters =  wrongLettersList.toString();
+        wrongLetterString =  wrongLettersList.toString();
     }
 
     // if the word is guessed, save score and continue to highscores
-    public void onWin(Activity currentactivity, Context context, TextView textview) {
-        Toast toast = Toast.makeText(getContext(), "Congratulations, you won!", Toast.LENGTH_SHORT);
+    public void onWin(Activity currentactivity, Context context, TextView textView) {
+        Toast toast = Toast.makeText(getContext(), "GG WP, you won!", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
         toast.show();
 
         Intent intent = new Intent(context, HistoryViewActivity.class);
-        intent.putExtra("GUESSESLEFT", currentguesses);
+        intent.putExtra("GUESSESLEFT", currentGuesses);
         intent.putExtra("GAMETYPE", gametype);
-        intent.putExtra("WORD", String.valueOf(textview));
+        intent.putExtra("WORD", String.valueOf(textView));
         currentactivity.startActivity(intent);
     }
 
     // if the user runs out of guesses, continue to highscores
-    public void onLose(Activity currentactivity, Context context) {
-        Toast toast = Toast.makeText(getContext(), "Unfortunately,  you lost...", Toast.LENGTH_SHORT);
+    public void onLose(Activity currentActivity, Context context) {
+        Toast toast = Toast.makeText(getContext(), "Aww,  you lost.", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
         toast.show();
 
         Intent intent = new Intent(context, HistoryViewActivity.class);
-        currentactivity.startActivity(intent);
+        currentActivity.startActivity(intent);
     }
 
     public String getGuessesString(){
-        return String.valueOf(currentguesses);
+        return String.valueOf(currentGuesses);
     }
 
     public int getGuesses(){
-        return currentguesses;
+        return currentGuesses;
     }
 
     public String getWrongLetters(){
-        return wrongletters;
+        return wrongLetterString;
     }
 
-    public void setWrongletters(String string, TextView textview){
-        textview.setText(string);
+    public void setWrongletters(String string, TextView textView){
+        textView.setText(string);
     }
 
-    public void setGuesses(int value, TextView textview){
-        currentguesses = value;
-        textview.setText(String.valueOf(currentguesses));
+    public void setGuesses(int value, TextView textView){
+        currentGuesses = value;
+        textView.setText(String.valueOf(currentGuesses));
     }
 
     public Context setContext(Context context){
@@ -90,6 +82,7 @@ abstract class GamePlay extends AppCompatActivity {
     }
 
     // the abstract methods to be implemented by the classes evil and good
-    public abstract boolean checkInWord(char letter, TextView wordtoguess_textview, TextView wrongletterlist_textview, TextView wrongtriesleft_textview);
+    public abstract boolean checkInWord(char letter, TextView wordToGuess_textView,
+            TextView wrongLetterList_textView, TextView wrongTriesLeft_textView);
 }
 

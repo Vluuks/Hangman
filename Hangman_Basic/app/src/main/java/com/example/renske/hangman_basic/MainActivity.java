@@ -8,10 +8,10 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public TextView wordtoguess_textview, wrongletterlist_textview, wrongtriesleft_textview;
-    public GamePreparation startgame;
-    public EvilGamePlay evilgame;
-    public GoodGamePlay goodgame;
+    public TextView wordToGuess_textView, wrongLetterList_textView, wrongTriesLeft_textView;
+    public GamePreparation startGame;
+    public EvilGamePlay evilGame;
+    public GoodGamePlay goodGame;
     public int gametype;
 
     @Override
@@ -20,31 +20,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // initialize views in the layout
-        wordtoguess_textview = (TextView) findViewById(R.id.main_textview);
-        wrongletterlist_textview = (TextView) findViewById(R.id.wrongletterlist_textview);
-        wrongtriesleft_textview = (TextView) findViewById(R.id.guessesleft_textview);
+        wordToGuess_textView = (TextView) findViewById(R.id.main_textview);
+        wrongLetterList_textView = (TextView) findViewById(R.id.wrongletterlist_textview);
+        wrongTriesLeft_textView = (TextView) findViewById(R.id.guessesleft_textview);
 
         // start the game's initialization
-        startgame = new GamePreparation();
-        startgame.loadDictionary(MainActivity.this);
-        startgame.initializeGame(MainActivity.this);
-        startgame.pickInitialWord(wordtoguess_textview);
+        startGame = new GamePreparation();
+        startGame.loadDictionary(MainActivity.this);
+        startGame.initializeGame(MainActivity.this);
+        startGame.pickInitialWord(wordToGuess_textView);
 
         // obtain game type from initializiation
-        gametype = startgame.getGameType();
+        gametype = startGame.getGameType();
 
         // determine which abstract implementation should be used from now on
         if (gametype == 1) {
-            evilgame = new EvilGamePlay();
-            evilgame.setContext(MainActivity.this);
-            evilgame.setGuesses(startgame.wrongtriesallowed, wrongtriesleft_textview);
-            evilgame.setWrongletters(" ", wrongletterlist_textview);
+            evilGame = new EvilGamePlay();
+            evilGame.setContext(MainActivity.this);
+            evilGame.setGuesses(startGame.wrongTriesAllowed, wrongTriesLeft_textView);
+            evilGame.setWrongletters(" ", wrongLetterList_textView);
         }
         else {
-            goodgame = new GoodGamePlay();
-            goodgame.setContext(MainActivity.this);
-            goodgame.setGuesses(startgame.wrongtriesallowed, wrongtriesleft_textview);
-            goodgame.setWrongletters(" ", wrongletterlist_textview);
+            goodGame = new GoodGamePlay();
+            goodGame.setContext(MainActivity.this);
+            goodGame.setGuesses(startGame.wrongTriesAllowed, wrongTriesLeft_textView);
+            goodGame.setWrongletters(" ", wrongLetterList_textView);
         }
     }
 
@@ -53,31 +53,33 @@ public class MainActivity extends AppCompatActivity {
 
         // if the chosen game type is evil
         if (gametype == 1) {
-            evilgame.checkInWord(letter, wordtoguess_textview, wrongletterlist_textview, wrongtriesleft_textview);
+            evilGame.checkInWord(letter, wordToGuess_textView, wrongLetterList_textView,
+                    wrongTriesLeft_textView);
 
             // if the word is guessed, save score and continue to highscores
-            if (wordtoguess_textview.getText().toString().indexOf('_') == -1) {
-                goodgame.onWin(MainActivity.this, MainActivity.this, wordtoguess_textview);
+            if (wordToGuess_textView.getText().toString().indexOf('_') == -1) {
+                goodGame.onWin(MainActivity.this, MainActivity.this, wordToGuess_textView);
             }
 
             // if the user runs out of guesses, continue to highscores
-            if (evilgame.getGuesses() == 0) {
-                evilgame.onLose(MainActivity.this, MainActivity.this);
+            if (evilGame.getGuesses() == 0) {
+                evilGame.onLose(MainActivity.this, MainActivity.this);
             }
         }
 
         // if the chosen game type is good
         else {
-            goodgame.checkInWord(letter, wordtoguess_textview, wrongletterlist_textview, wrongtriesleft_textview);
+            goodGame.checkInWord(letter, wordToGuess_textView, wrongLetterList_textView,
+                    wrongTriesLeft_textView);
 
             // if the word is guessed, save score and continue to highscores
-            if (wordtoguess_textview.getText().toString().indexOf('_') == -1) {
-                goodgame.onWin(MainActivity.this, MainActivity.this, wordtoguess_textview);
+            if (wordToGuess_textView.getText().toString().indexOf('_') == -1) {
+                goodGame.onWin(MainActivity.this, MainActivity.this, wordToGuess_textView);
             }
 
             // if the user runs out of guesses, continue to highscores
-            if (goodgame.getGuesses() == 0) {
-                goodgame.onLose(MainActivity.this, MainActivity.this);
+            if (goodGame.getGuesses() == 0) {
+                goodGame.onLose(MainActivity.this, MainActivity.this);
             }
         }
     }
@@ -168,29 +170,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, StartScreenActivity.class);
                 MainActivity.this.startActivity(intent);
                 return true;
-
             default:
                 return false;
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
