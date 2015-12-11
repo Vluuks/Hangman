@@ -11,4 +11,9 @@
             <item>HARE</item>
         </string-array>
     <string name="title_activity_start_screen">StartScreenActivity</string>
-    </resources>
+    <string name="good">Good</string>
+    <string name="evil">Evil</string>
+    <string name="highscores">HIGHSCORES</string>
+    <string name="newgame">NEWGAME</string>
+    <string name="options">OPTIONS</string>
+</resources>

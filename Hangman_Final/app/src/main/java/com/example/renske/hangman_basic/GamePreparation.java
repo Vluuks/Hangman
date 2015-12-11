@@ -9,21 +9,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * The GamePreparation handles the intialization of dictionary, the first picked word and
+ * obtains the users's chosen settings from SharedPreferences, if relevant.
+ */
+
 public class GamePreparation extends AppCompatActivity {
 
     // declare variables
     public static ArrayList<String> dictionary;
     public static String underscoredWord, pickedWord;
     public int currentWordlength, longestWord, maxWordLength, wrongTriesAllowed, gametype;
-    
-    // load the dictiomary from XML file
+
+    /**
+     * Loads dictionary from designated XML file.
+     */
     public void loadDictionary(Context context) {
         String[] wordstoguess = context.getResources().getStringArray(R.array.words_large);
         dictionary = new ArrayList<String>();
         dictionary.addAll(Arrays.asList(wordstoguess));
     }
 
-    // initialize the basic settings before starting the game
+    /**
+     * Obtain settings from user.
+     */
     public void initializeGame(Context context) {
             SharedPreferences useroptions = context.getSharedPreferences("settings",
                     this.MODE_PRIVATE);
@@ -32,7 +41,9 @@ public class GamePreparation extends AppCompatActivity {
             gametype = useroptions.getInt("GAMETYPE", 1);
     }
 
-    // pick the word to start the game with
+    /**
+     * Pick the word that the game will start with.
+     */
     public void pickInitialWord(TextView textview) {
         longestWord = 15;
         currentWordlength = 1;
@@ -63,6 +74,9 @@ public class GamePreparation extends AppCompatActivity {
         textview.setText(underscoredWord);
     }
 
+    /**
+     * Small methods used to obtain or set variable's values.
+     */
     public int getGameType(){
         return gametype;
     }

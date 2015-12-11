@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.widget.TextView;
 
+/**
+ * MainActivity instantiates the GamePlay classes and contains all the interface elements.
+ */
 public class MainActivity extends AppCompatActivity {
 
     public TextView wordToGuess_textView, wrongLetterList_textView, wrongTriesLeft_textView;
@@ -19,21 +22,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // initialize views in the layout
+        // Initialize layout components.
         wordToGuess_textView = (TextView) findViewById(R.id.main_textview);
         wrongLetterList_textView = (TextView) findViewById(R.id.wrongletterlist_textview);
         wrongTriesLeft_textView = (TextView) findViewById(R.id.guessesleft_textview);
 
-        // start the game's initialization
+        // Initialize game compontents.
         startGame = new GamePreparation();
         startGame.loadDictionary(MainActivity.this);
         startGame.initializeGame(MainActivity.this);
         startGame.pickInitialWord(wordToGuess_textView);
-
-        // obtain game type from initializiation
         gametype = startGame.getGameType();
 
-        // determine which abstract implementation should be used from now on
+        // Create instance corresponding to gametype.
         if (gametype == 1) {
             evilGame = new EvilGamePlay();
             evilGame.setContext(MainActivity.this);
@@ -48,43 +49,44 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // redirect user's keyboard input to the correct gametype
+    /**
+     * User input from keyboard is redirected to corresponding class.
+     */
     public void redirectInput(char letter) {
 
-        // if the chosen game type is evil
         if (gametype == 1) {
             evilGame.checkInWord(letter, wordToGuess_textView, wrongLetterList_textView,
                     wrongTriesLeft_textView);
 
-            // if the word is guessed, save score and continue to highscores
+            // If the word is guessed, save score and continue to highscores.
             if (wordToGuess_textView.getText().toString().indexOf('_') == -1) {
                 goodGame.onWin(MainActivity.this, MainActivity.this, wordToGuess_textView);
             }
 
-            // if the user runs out of guesses, continue to highscores
+            // If the user runs out of guesses, continue to highscores.
             if (evilGame.getGuesses() == 0) {
                 evilGame.onLose(MainActivity.this, MainActivity.this);
             }
         }
-
-        // if the chosen game type is good
         else {
             goodGame.checkInWord(letter, wordToGuess_textView, wrongLetterList_textView,
                     wrongTriesLeft_textView);
 
-            // if the word is guessed, save score and continue to highscores
+            // If the word is guessed, save score and continue to highscores.
             if (wordToGuess_textView.getText().toString().indexOf('_') == -1) {
                 goodGame.onWin(MainActivity.this, MainActivity.this, wordToGuess_textView);
             }
 
-            // if the user runs out of guesses, continue to highscores
+            // If the user runs out of guesses, continue to highscores.
             if (goodGame.getGuesses() == 0) {
                 goodGame.onLose(MainActivity.this, MainActivity.this);
             }
         }
     }
 
-    // handle user keyboard input
+    /**
+     * Listener for user keyboard input.
+     */
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {

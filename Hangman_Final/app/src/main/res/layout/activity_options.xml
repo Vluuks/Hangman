@@ -10,34 +10,40 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <ImageView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/hangmanlogo"
-        android:layout_gravity="center_horizontal" />
+        android:text=" "
+        android:id="@+id/guessesamount_textview" />
 
-    <Button
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/guessesamount" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="NEW GAME"
-        android:id="@+id/startnewgame"
-        android:layout_gravity="center_horizontal"
-        android:onClick="startNewGame"/>
+        android:text=" "
+        android:id="@+id/wordlength_textview" />
 
-    <Button
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/wordlength" />
+
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OPTIONS"
-        android:id="@+id/options"
-        android:layout_gravity="center_horizontal"
-        android:onClick="goToOptions"/>
+        android:text=""
+        android:id="@+id/gamemode_textview" />
 
-    <Button
+
+    <Switch
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="HIGHSCORES"
-        android:id="@+id/highscores"
-        android:layout_gravity="center_horizontal"
-        android:onClick="goToHighscores"/>
-
+        android:id="@+id/gamemode"
+        android:textOn="@string/good"
+        android:textOff="@string/evil"/>
 </LinearLayout>

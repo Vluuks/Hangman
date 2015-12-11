@@ -3,25 +3,21 @@ Renske Talsma
 
 # Hangman
 
-This app is titled Hangman for now as I do not know a better name atm.
-
 # Summary
-
-This hangman game is a different take on the classic version that adds some extra fun by having the letters you pick impact the game in another way, aside from showing them in the word when guessed correctly, they will also be crossed off a grid, which could have consequences for your score...
-
+This app is titled Hangman and contains both an evil and good version of the game.
+ 
 # Features
-* Recognises which letters are in the word and which arent
-* Immediate response to user's keyboard presses
+* Recognises which letters are in the word and which aren't.
+* Highscore table to keep track of user's performance.
+* Immediate response to user's keyboard presses.
+* Evil and good mode.
+* Options to set your preferred word length and failed guesses allowed.
 
 
-# TODO
-* Import dictionary
-* Recognise win/lose scenarios
-* Track highscores
-* Implement good/evil class
-* Remember  progress
+# Notes
+I would have liked to incorporate the keyboard key press detection and subsequent behaviour in the Good/Evil classes but the nature of the OnKeyUp method made this impossible.
 
 
-See a rough draft of the app:
+# First draft version:
 
 ![app](http://i.imgur.com/UjftaZe.png)

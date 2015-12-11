@@ -7,13 +7,18 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Set;
 
+/**
+ * EvilGamePlay inherits all functionalities of GamePlay but implements a different take on hangman
+ * through checkInWord, in which the computer tries to avoid that the user guesses the word by
+ * changing the set of words it has in mind if needed every time the user takes a guess.
+ */
 public class EvilGamePlay extends GamePlay {
 
     @Override
     public boolean checkInWord(char letter, TextView wordToGuess_textView,
         TextView wrongLetterList_textView, TextView wrongTriesLeft_textView) {
 
-        //check if this letter was already pressed
+        // Check if this letter was already pressed.
         if (wrongLetterString.indexOf(letter) != -1 ||
                 GamePreparation.underscoredWord.indexOf(letter) > 0) {
             Toast toast = Toast.makeText(getContext(), "You already guessed " + letter,
@@ -22,14 +27,13 @@ public class EvilGamePlay extends GamePlay {
             toast.show();
             return false;
         }
-
         else {
             ArrayList<String> evilDictionary;
             evilDictionary = GamePreparation.getDictionary();
-            Hashtable hashtable = new Hashtable(); //TODO
+            Hashtable<String, ArrayList<String>> hashtable = new Hashtable<String, ArrayList<String>>();
             int wordLength = pickedWord.length();
 
-            // iterate over all words in dictionary and add them to new one if length matches
+            // Add words of matching length to new dictionary.
             ArrayList<String> evilDictionary_sameLength = new ArrayList<String>();
             for (String word : evilDictionary) {
                 if (word.length() == wordLength) {
@@ -37,14 +41,11 @@ public class EvilGamePlay extends GamePlay {
                 }
             }
 
-            // when user presses a letter
+            // When user tries a letter, search for matching strings.
             for (String word : evilDictionary_sameLength) {
-
-                // create basic string of underscores to function as base key
                 String theKeyWord = new String(new char[wordLength]).replace("\0", "_");
                 StringBuilder keyWordBuilder = new StringBuilder(theKeyWord);
 
-                // iterate over characters in word
                 for (int i = 0; i < word.length(); i++) {
                     if (i == letter) {
                         keyWordBuilder.setCharAt(i, letter);
@@ -55,14 +56,12 @@ public class EvilGamePlay extends GamePlay {
                 ArrayList<String> tempWordList = new ArrayList<String>();
                 tempWordList.add(word);
 
-                // if final key is already in hash table
+                // Add to entry or create hash table entry for word.
                 if (hashtable.containsKey(theFinalKey)) {
                     tempWordList = (ArrayList<String>) hashtable.get(theFinalKey);
                     tempWordList.add(word);
                     hashtable.put(theFinalKey, tempWordList);
                 }
-
-                // else create new entry for this key
                 else {
                     hashtable.put(theFinalKey, tempWordList);
                 }
@@ -70,24 +69,22 @@ public class EvilGamePlay extends GamePlay {
                 tempWordList.clear();
             }
 
-            // compare size of lists in hashtable and find out which one is the largest
+            // Obtain largest list from hashtable.
             Set<String> keys = hashtable.keySet();
             ArrayList<String> currentWordList = (ArrayList<String>)
                     hashtable.get(GamePreparation.underscoredWord);
             String currentKey = GamePreparation.underscoredWord;
 
-            // iterate over all the lists of words in the hashtable
             for (String key : keys) {
                 ArrayList<String> tempWordList_2 = (ArrayList<String>) hashtable.get(key);
 
-                // if the found list is bigger than the one before, use it
                 if (tempWordList_2.size() > currentWordList.size()) {
                     currentWordList = tempWordList_2;
                     currentKey = key;
                 }
             }
 
-            // if there is no change in optimal key/list combination
+            // If there is no change in optimal key/list combination, count as wrong guess.
             if (currentKey == GamePreparation.underscoredWord) {
                 currentGuesses--;
                 addWrongLetter(letter);
@@ -95,9 +92,8 @@ public class EvilGamePlay extends GamePlay {
                 wrongTriesLeft_textView.setText(getGuessesString());
                 return false;
             }
-
+            // If there is a change in key, set this key as new wordstatus and count as correct.
             else {
-                // start building the new string do be displayed
                 StringBuilder thewordbuilder = new StringBuilder(GamePreparation.underscoredWord);
 
                 for (int i = 0; i < GamePreparation.pickedWord.length(); i++) {

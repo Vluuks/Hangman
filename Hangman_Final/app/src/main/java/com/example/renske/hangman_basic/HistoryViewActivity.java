@@ -7,13 +7,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * The HistoryViewActivity shows a list of highscores of the game in a listview.
+ */
 public class HistoryViewActivity extends AppCompatActivity {
 
     private ListView highscoreListView;
@@ -27,14 +29,14 @@ public class HistoryViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_highscores);
 
-        // initialize list and adapter
+        // Initialize list and adapter
         highscoreList = new ArrayList<String>();
         listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
                 highscoreList);
         highscoreListView = (ListView) findViewById(R.id.listView);
         highscoreListView.setAdapter(listAdapter);
 
-        // get list with highscores from preferences if this is not the first time they are added
+        // Get list with highscores from preferences if this is not the first time they are added.
         SharedPreferences savedList = this.getSharedPreferences("savedhighscores", MODE_PRIVATE);
         Set<String> highscoreset = savedList.getStringSet("theSavedList", null);
         if (highscoreset != null) {
@@ -42,20 +44,23 @@ public class HistoryViewActivity extends AppCompatActivity {
             highscoreList.addAll(savedlist);
         }
 
-        // if the user won a game, add their score to the table
+        // If the user won a game, add their score to the table.
         Intent intent = getIntent();
         if (intent.getStringExtra("SOURCE") == "win"); {
             putHighscoreFromIntentInArray(intent);
         }
 
-        // if there are no highscores yet, display message accordingly
+        // If there are no highscores yet, display message accordingly.
         if (highscoreset == null && intent.getStringExtra("SOURCE") != "win") {
             String[] nohighscores = new String[]{"No highscores yet."};
             highscoreList.addAll(Arrays.asList(nohighscores));
         }
     }
 
-    // put highscore in list
+    /**
+     * Method that adds highscores to the list and ensures they are stored in SharedPreferences
+     * for future reference.
+     */
     public void putHighscoreFromIntentInArray(Intent intent) {
 
         if (highscoreList.contains("No highscores yet.")){
@@ -90,7 +95,7 @@ public class HistoryViewActivity extends AppCompatActivity {
         edit.commit();
     }
 
-    // redirect user to menu if back is pressed
+    // Redirect user to menu if back is pressed.
     public void onBackPressed(){
             Intent intent = new Intent(this, StartScreenActivity.class);
             HistoryViewActivity.this.startActivity(intent);
